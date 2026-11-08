@@ -12,7 +12,7 @@ void setup() {
   displayManager.begin();
   displayManager.drawMainScreen();
   
-  bleManager.begin();
+  //bleManager.begin();
 }
 
 void loop() {
