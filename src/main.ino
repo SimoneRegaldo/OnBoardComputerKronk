@@ -1,5 +1,6 @@
-#include "BleManager.h"
-#include "DisplayManager.h"
+#include "Arduino.h"
+#include "BLE_Manager.h"
+#include "Display_Manager.h"
 
 BleManager bleManager;
 DisplayManager displayManager;

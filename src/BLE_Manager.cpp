@@ -1,4 +1,4 @@
-#include "BleManager.h"
+#include "BLE_Manager.h"
 
 class MyAdvertisedDeviceCallbacks: public BLEAdvertisedDeviceCallbacks {
     void onResult(BLEAdvertisedDevice advertisedDevice) {
