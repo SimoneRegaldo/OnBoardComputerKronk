@@ -14,12 +14,23 @@ Arduino_RGB_Display *gfx = new Arduino_RGB_Display(
     LCD_WIDTH, LCD_HEIGHT, rgb_panel, 0, true
 );
 
+static lv_display_t * disp;
+static uint8_t buf[LCD_WIDTH * LCD_HEIGHT / 10 * 2];
+
 void DisplayManager::begin() 
 {
   // 初始化屏幕
   if (!gfx->begin()) {
       Serial.println("GFX Init Failed!");
       while (1);
+  }
+  else
+  {
+    lv_init();
+
+    disp = lv_display_create(LCD_WIDTH, LCD_HEIGHT);
+    lv_display_set_flush_cb(disp, myDispFlush);
+    lv_display_set_buffers(disp, buf, NULL, sizeof(buf), LV_DISPLAY_RENDER_MODE_PARTIAL);
   }
 }
 
@@ -42,4 +53,20 @@ void DisplayManager::turnOnBackLight()
 {
   pinMode(TFT_BL, OUTPUT);
   digitalWrite(TFT_BL, HIGH);
+}
+
+void DisplayManager::myDispFlush(lv_display_t *disp, const lv_area_t *area, uint8_t *px_map)
+{
+  uint32_t w = (area->x2 - area->x1 + 1);
+  uint32_t h = (area->y2 - area->y1 + 1);
+
+  uint16_t *color_p = (uint16_t *)px_map;
+  
+#if (LV_COLOR_16_SWAP != 0)
+  gfx->draw16bitBeRGBBitmap(area->x1, area->y1, color_p, w, h);
+#else
+  gfx->draw16bitRGBBitmap(area->x1, area->y1, color_p, w, h);
+#endif
+
+  lv_disp_flush_ready(disp);
 }

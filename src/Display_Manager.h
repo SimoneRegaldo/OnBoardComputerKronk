@@ -37,6 +37,7 @@ class DisplayManager {
     void showScanningState(bool scanning);
     bool checkTouch(int &touchX, int &touchY);
     void turnOnBackLight();
+    void myDispFlush(lv_display_t *disp, const lv_area_t *area, uint8_t *px_map);
 
   private:
     int btnX = 60, btnY = 120, btnW = 200, btnH = 60;
